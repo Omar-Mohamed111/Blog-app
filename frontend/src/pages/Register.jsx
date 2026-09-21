@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import * as authService from "../services/authService";
 
 export default function Register() {
+  const { loginUser } = useAuth();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -10,7 +12,7 @@ export default function Register() {
 
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  
+
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -21,11 +23,16 @@ export default function Register() {
 
     try {
       await authService.register(firstName, lastName, email, password);
-      navigate("/login");
+
+      const token = await authService.login(email, password);
+
+      loginUser(token);
+
+      navigate("/");
     } catch (err) {
       setError(err.message);
     } finally {
-      setLoading(true);
+      setLoading(false);
     }
   };
 

@@ -1,32 +1,19 @@
 const validateUpdateUser = (req, res, next) => {
   const { firstName, lastName, email } = req.body;
 
-  if (typeof firstName !== "string" || firstName.trim() === "") {
-    return res.status(400).json({
-      message: "First Name Is Required",
-    });
-  }
+  if (typeof firstName !== "string" || firstName.trim() === "")
+    throw new Error("First Name Is Required");
 
-  if (typeof lastName !== "string" || lastName.trim() === "") {
-    return res.status(400).json({
-      message: "Last Name Is Required",
-    });
-  }
+  if (typeof lastName !== "string" || lastName.trim() === "")
+    throw new Error("Last Name Is Required");
 
-  if (typeof email !== "string" || email.trim() === "") {
-    return res.status(400).json({
-      message: "Email Is Required",
-    });
-  }
+  if (typeof email !== "string" || email.trim() === "")
+    throw new Error("Email Is Required");
 
-  if (!email.includes("@")) {
-    return res.status(400).json({
-      message: "Invalid Email",
-    });
-  }
+  if (!email.includes("@"))
+     throw new Error("Invalid Email");
 
-  next()
+  next();
 };
 
-
-module.exports = validateUpdateUser
+module.exports = validateUpdateUser;

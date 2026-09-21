@@ -1,6 +1,10 @@
 const pool = require("../../config/db");
 
 // ******************************************************************************
+// CRUD
+// ******************************************************************************
+
+// ******************************************************************************
 // Register & Login
 // ******************************************************************************
 
@@ -25,16 +29,11 @@ const findUserByEmail = async (email) => {
   return result.rows[0];
 };
 
-// ******************************************************************************
-// CRUD
-// ******************************************************************************
-
 // *****************************************
 const getUsers = async () => {
   const result = await pool.query(`SELECT * FROM users`);
   return result.rows;
 };
-
 
 // *****************************************
 const getUserById = async (id) => {
@@ -54,9 +53,18 @@ const updateUser = async (id, firstName, lastName, email) => {
 
 // *****************************************
 const deleteUser = async (id) => {
+  // // ***** Hard Delete *****
   const result = await pool.query(`DELETE FROM users WHERE id=$1 RETURNING *`, [
     id,
   ]);
+
+  // // ***** Soft Delete *****
+  // const result = await pool.query(
+  //   `UPDATE users SET deleted_at = NOW()
+  //   WHERE id=$1 AND deleted_at IS NULL RETURNING *`,
+  //   [id],
+  // );
+
   return result.rows[0];
 };
 

@@ -18,7 +18,6 @@ const toSafeUser = (user) => {
 // Register
 // *****************
 const register = async ({ firstName, lastName, email, password }) => {
-  
   const newUser = await userRepository.findUserByEmail(email);
   if (newUser) throw new Error("User Already Exist");
 
@@ -111,22 +110,19 @@ const updateUser = async (id, { firstName, lastName, email }) => {
   return safeUser;
 };
 
-
 // *****************************************
 
-const deleteUser = async(id) => {
-
-  const user = await userRepository.deleteUser(id)
-  if(!user) {
-    const error = new Error("User Not Found")
-    error.statusCode = 404
-    throw error
+const deleteUser = async (id) => {
+  const user = await userRepository.deleteUser(id);
+  if (!user) {
+    const error = new Error("User Not Found");
+    error.statusCode = 404;
+    throw error;
   }
 
-  const safeUser = toSafeUser(user)
-  return safeUser
-}
-
+  const safeUser = toSafeUser(user);
+  return safeUser;
+};
 
 module.exports = {
   register,
@@ -134,5 +130,5 @@ module.exports = {
   getUsers,
   getUserById,
   updateUser,
-  deleteUser
+  deleteUser,
 };
